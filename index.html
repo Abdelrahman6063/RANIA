@@ -1,0 +1,458 @@
+ <!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>RANIA</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Amiri:ital,wght@0,400;0,700;1,400&family=Reem+Kufi:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap');
+
+        * { margin:0; padding:0; box-sizing:border-box; }
+
+        body {
+            min-height:100vh; min-height:100dvh;
+            background:#0a0505;
+            font-family:'Cairo',sans-serif;
+            user-select:none;
+            -webkit-tap-highlight-color:transparent;
+            -webkit-user-select:none;
+            overflow:hidden;
+            color:#fff;
+        }
+
+        .bg-image { position:fixed; inset:0; z-index:0; }
+        .bg-image img { width:100%; height:100%; object-fit:cover; display:block; filter:brightness(0.45) contrast(1.05); }
+        .bg-overlay { position:absolute; inset:0; background:rgba(0,0,0,0.4); z-index:1; }
+
+        .rania-title {
+            position:fixed; top:12px; left:50%; transform:translateX(-50%); z-index:35;
+            font-family:'Playfair Display',serif; font-size:1.8em; font-weight:900; letter-spacing:8px;
+            background:linear-gradient(135deg,#fbbf24,#ec4899,#3b82f6,#f472b6);
+            background-size:300% 300%;
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+            animation:titleGlow 3s ease infinite;
+            filter:drop-shadow(0 0 15px rgba(251,191,36,0.5));
+            pointer-events:none;
+        }
+        @keyframes titleGlow {
+            0%,100% { background-position:0% 50%; }
+            50% { background-position:100% 50%; filter:drop-shadow(0 0 25px rgba(59,130,246,0.8)); }
+        }
+
+        /* ===== LOGIN PAGE ===== */
+        .login-page {
+            position:fixed; inset:0; z-index:40;
+            display:flex; align-items:center; justify-content:center;
+        }
+        .login-page.hidden { display:none; }
+
+        .login-card {
+            width:320px; padding:35px 28px;
+            background:rgba(0,0,0,0.5);
+            backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+            border-radius:20px; text-align:center;
+            border:1px solid rgba(255,255,255,0.1);
+            box-shadow:0 20px 60px rgba(0,0,0,0.5);
+            animation:cardIn 0.6s ease-out;
+            position:relative;
+        }
+        @keyframes cardIn { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+        .login-card::before {
+            content:''; position:absolute; inset:-3px; border-radius:22px; padding:3px;
+            background:linear-gradient(135deg,#3b82f6,#ef4444,#3b82f6,#ef4444,#3b82f6);
+            background-size:300% 300%; animation:boxGlow 4s linear infinite;
+            -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+            -webkit-mask-composite:xor; mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+            mask-composite:exclude; z-index:-1;
+        }
+        @keyframes boxGlow { 0% { background-position:0% 50%; } 100% { background-position:300% 50%; } }
+        .login-title { font-family:'Playfair Display',serif; font-size:1.8em; font-weight:900; letter-spacing:6px; background:linear-gradient(135deg,#fbbf24,#ec4899,#3b82f6); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:5px; }
+        .login-subtitle { color:rgba(255,255,255,0.5); font-size:0.78em; letter-spacing:3px; margin-bottom:22px; }
+        .input-group { margin-bottom:14px; text-align:right; }
+        .input-group label { display:block; color:#fde68a; font-size:0.75em; font-weight:600; margin-bottom:4px; letter-spacing:1px; }
+        .input-group input { width:100%; padding:12px 14px; background:rgba(255,255,255,0.05); border:1.5px solid rgba(255,255,255,0.2); border-radius:12px; color:#fff; font-size:0.9em; outline:none; transition:all 0.3s ease; text-align:right; font-family:'Cairo',sans-serif; }
+        .input-group input:focus { border-color:#fbbf24; box-shadow:0 0 20px rgba(251,191,36,0.25); background:rgba(255,255,255,0.08); }
+        .input-group input::placeholder { color:rgba(255,255,255,0.25); }
+        .login-btn { width:100%; padding:13px; border:none; border-radius:14px; background:linear-gradient(135deg,#3b82f6,#ec4899,#fbbf24,#3b82f6); background-size:300% 300%; color:#fff; font-size:1em; font-weight:700; cursor:pointer; letter-spacing:3px; font-family:'Cairo',sans-serif; transition:all 0.4s ease; box-shadow:0 8px 25px rgba(59,130,246,0.3); }
+        .login-btn:hover { background-position:right center; box-shadow:0 12px 35px rgba(236,72,153,0.5); letter-spacing:5px; }
+        .login-btn:active { transform:scale(0.95); }
+        .login-btn.error { animation:shake 0.5s ease; background:linear-gradient(135deg,#ef4444,#dc2626,#ef4444); }
+        @keyframes shake { 0%,100%{transform:translateX(0);} 25%{transform:translateX(-8px);} 50%{transform:translateX(8px);} 75%{transform:translateX(-5px);} }
+        .music-box { margin-top:16px; padding:10px 14px; background:rgba(255,255,255,0.03); border:1.5px solid rgba(255,255,255,0.12); border-radius:12px; display:flex; align-items:center; justify-content:center; gap:8px; }
+        .music-btn { width:32px; height:32px; border-radius:50%; background:rgba(255,255,255,0.08); border:1.5px solid rgba(255,255,255,0.25); color:#fff; font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.3s ease; }
+        .music-btn:active { background:rgba(255,255,255,0.2); }
+        .music-btn.playing { background:rgba(59,130,246,0.35); border-color:#3b82f6; box-shadow:0 0 15px rgba(59,130,246,0.35); }
+        .music-label { color:rgba(255,255,255,0.4); font-size:0.7em; letter-spacing:2px; }
+        .music-title { color:#fde68a; font-size:0.75em; font-weight:600; }
+
+        /* ===== MESSAGES PAGE ===== */
+        .messages-page { position:fixed; inset:0; z-index:40; display:none; }
+        .messages-page.show { display:block; }
+
+        .boxes-container {
+            position:fixed; inset:0; z-index:10;
+            overflow-y:auto; overflow-x:hidden;
+            -webkit-overflow-scrolling:touch;
+            scroll-snap-type:y mandatory;
+            padding:70px 16px 30px;
+        }
+        .boxes-container::-webkit-scrollbar { width:0; }
+
+        .boxes-track { display:flex; flex-direction:column; align-items:center; gap:20px; max-width:420px; margin:0 auto; padding-bottom:20px; }
+
+        .box {
+            width:280px; height:340px;
+            scroll-snap-align:center; flex-shrink:0;
+            cursor:pointer; position:relative;
+            background:transparent; border-radius:20px;
+            display:flex; align-items:center; justify-content:center; flex-direction:column;
+            transition:all 0.4s ease;
+        }
+        .box:active { transform:scale(0.95); }
+
+        .laser-edge { position:absolute; inset:0; border-radius:20px; pointer-events:none; overflow:hidden; }
+        .laser-edge::before {
+            content:''; position:absolute; inset:-12px; border-radius:32px; padding:12px;
+            background:linear-gradient(90deg,rgba(239,68,68,0.3),rgba(239,68,68,1),rgba(239,68,68,1),rgba(34,197,94,1),rgba(34,197,94,1),rgba(34,197,94,0.3),rgba(34,197,94,1),rgba(34,197,94,1),rgba(239,68,68,1),rgba(239,68,68,1),rgba(239,68,68,0.3));
+            background-size:400% 100%; animation:laserFlow 2.5s linear infinite;
+            -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+            -webkit-mask-composite:xor; mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+            mask-composite:exclude; filter:blur(4px);
+        }
+        .laser-edge::after {
+            content:''; position:absolute; inset:-24px; border-radius:44px; padding:24px;
+            background:linear-gradient(90deg,transparent,rgba(239,68,68,0.25),rgba(239,68,68,0.6),rgba(34,197,94,0.6),rgba(34,197,94,0.25),transparent,rgba(34,197,94,0.25),rgba(34,197,94,0.6),rgba(239,68,68,0.6),rgba(239,68,68,0.25),transparent);
+            background-size:400% 100%; animation:laserFlow 2.5s linear infinite;
+            -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+            -webkit-mask-composite:xor; mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+            mask-composite:exclude; filter:blur(28px);
+        }
+        @keyframes laserFlow { 0% { background-position:0% 50%; } 100% { background-position:400% 50%; } }
+
+        .box-heart { font-size:55px; animation:heartBeat 1.2s ease-in-out infinite; filter:drop-shadow(0 0 15px rgba(255,255,255,0.5)) drop-shadow(0 0 35px rgba(239,68,68,0.6)); position:relative; z-index:1; }
+        @keyframes heartBeat { 0%,100%{transform:scale(1);} 15%{transform:scale(1.25);} 30%{transform:scale(1);} 45%{transform:scale(1.2);} 60%{transform:scale(1);} }
+        .box-open { font-family:'Playfair Display',serif; font-size:1.3em; font-weight:700; letter-spacing:5px; color:#fff; text-shadow:0 0 15px rgba(255,255,255,0.5); margin-top:10px; position:relative; z-index:1; animation:openPulse 2s ease-in-out infinite; }
+        @keyframes openPulse { 0%,100%{opacity:0.7;} 50%{opacity:1; text-shadow:0 0 25px rgba(255,255,255,0.9),0 0 45px rgba(239,68,68,0.5);} }
+        .box-number { position:absolute; top:12px; right:16px; font-family:'Amiri',serif; font-size:1em; font-weight:900; color:rgba(255,255,255,0.5); z-index:1; }
+
+        /* ===== PRIVATE BOX ===== */
+        .private-box {
+            width:280px; height:340px;
+            scroll-snap-align:center; flex-shrink:0;
+            cursor:pointer; position:relative;
+            background:transparent; border-radius:20px;
+            display:flex; align-items:center; justify-content:center; flex-direction:column;
+            transition:all 0.4s ease;
+        }
+        .private-box:active { transform:scale(0.95); }
+        .private-box .laser-edge::before {
+            background:linear-gradient(90deg,rgba(239,68,68,0.3),rgba(239,68,68,1),rgba(239,68,68,1),rgba(220,38,38,1),rgba(220,38,38,1),rgba(239,68,68,0.3),rgba(220,38,38,1),rgba(220,38,38,1),rgba(239,68,68,1),rgba(239,68,68,1),rgba(239,68,68,0.3));
+        }
+        .private-box .laser-edge::after {
+            background:linear-gradient(90deg,transparent,rgba(239,68,68,0.25),rgba(239,68,68,0.6),rgba(220,38,38,0.6),rgba(220,38,38,0.25),transparent,rgba(220,38,38,0.25),rgba(220,38,38,0.6),rgba(239,68,68,0.6),rgba(239,68,68,0.25),transparent);
+        }
+        .private-box-heart { font-size:55px; animation:heartBeat 1.2s ease-in-out infinite; filter:drop-shadow(0 0 15px rgba(255,255,255,0.5)) drop-shadow(0 0 35px rgba(239,68,68,0.6)); position:relative; z-index:1; }
+        .private-box-text { font-family:'Playfair Display',serif; font-size:1.1em; font-weight:900; letter-spacing:5px; color:#ef4444; text-shadow:0 0 15px rgba(239,68,68,0.5); margin-top:10px; position:relative; z-index:1; animation:openPulse 2s ease-in-out infinite; }
+
+        /* ===== COUNTER ===== */
+        .counter-wrapper { display:flex; flex-direction:column; align-items:center; gap:12px; scroll-snap-align:center; padding:10px 0; }
+        .counter { display:flex; gap:8px; padding:10px 20px; background:rgba(0,0,0,0.55); border:2px solid rgba(255,255,255,0.2); border-radius:20px; backdrop-filter:blur(12px); font-size:1.1em; }
+        .counter-item { text-align:center; min-width:38px; }
+        .counter-value { font-size:1.2em; font-weight:900; color:#fbbf24; font-family:'Amiri',serif; line-height:1; text-shadow:0 0 10px rgba(251,191,36,0.5); }
+        .counter-label { font-size:0.45em; color:#fde68a; letter-spacing:2px; opacity:0.8; }
+        .counter-sep { color:rgba(255,255,255,0.3); font-size:0.8em; display:flex; align-items:center; }
+
+        /* ===== OVERLAY ===== */
+        .msg-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.93); z-index:80; display:none; align-items:center; justify-content:center; flex-direction:column; }
+        .msg-overlay.show { display:flex; }
+        .msg-card { width:92vw; max-width:420px; border-radius:16px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.8); position:relative; background:#1a0a04; animation:popIn 0.5s cubic-bezier(0.4,0,0.2,1); }
+        @keyframes popIn { from { transform:scale(0.5); opacity:0; } to { transform:scale(1); opacity:1; } }
+        .msg-card img { width:100%; height:auto; display:block; filter:brightness(0.5); aspect-ratio:720/1011; object-fit:cover; }
+        .typewriter { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center; color:#fff; font-family:'Amiri','Reem Kufi',serif; font-size:0.95em; line-height:2.4; font-weight:600; pointer-events:none; width:84%; max-height:75%; overflow-y:auto; }
+        .typewriter.small-text { font-size:0.8em; line-height:2.1; }
+        .typewriter .cursor { display:inline-block; width:2px; height:1.2em; background:#fff; margin-right:3px; animation:blink 0.8s step-end infinite; vertical-align:text-bottom; }
+        @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
+        .close-btn { position:absolute; top:10px; right:10px; width:34px; height:34px; background:rgba(0,0,0,0.6); border:2px solid rgba(255,255,255,0.4); border-radius:50%; color:#fff; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:90; }
+        .close-btn:active { background:rgba(255,255,255,0.3); }
+        .nav-arrows { display:flex; gap:12px; margin-top:16px; }
+        .nav-arrow { width:42px; height:42px; background:rgba(255,255,255,0.08); border:2px solid rgba(255,255,255,0.3); border-radius:50%; color:#fff; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+        .nav-arrow:active { background:rgba(255,255,255,0.2); }
+        .nav-arrow:disabled { opacity:0.3; pointer-events:none; }
+
+        /* ===== PRIVATE LOGIN PAGE ===== */
+        .private-login-page {
+            position:fixed; inset:0; z-index:50;
+            display:none; align-items:center; justify-content:center;
+            background:rgba(0,0,0,0.5);
+        }
+        .private-login-page.show { display:flex; }
+
+        .private-login-card {
+            width:300px; padding:35px 28px;
+            background:transparent;
+            backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+            border-radius:20px; text-align:center;
+            border:1px solid rgba(239,68,68,0.3);
+            box-shadow:0 20px 60px rgba(0,0,0,0.6),0 0 40px rgba(239,68,68,0.15);
+            position:relative; z-index:2;
+        }
+        .private-login-card::before {
+            content:''; position:absolute; inset:-3px; border-radius:22px; padding:3px;
+            background:linear-gradient(135deg,#ef4444,#dc2626,#ef4444,#dc2626,#ef4444);
+            background-size:300% 300%; animation:boxGlow 4s linear infinite;
+            -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+            -webkit-mask-composite:xor; mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+            mask-composite:exclude; z-index:-1;
+        }
+        .private-login-title { font-family:'Playfair Display',serif; font-size:2em; font-weight:900; letter-spacing:8px; background:linear-gradient(135deg,#ef4444,#dc2626,#fbbf24); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:5px; filter:drop-shadow(0 0 20px rgba(239,68,68,0.5)); }
+        .private-login-subtitle { color:rgba(255,255,255,0.4); font-size:0.75em; letter-spacing:3px; margin-bottom:22px; }
+        .private-login-card .input-group { margin-bottom:14px; text-align:right; }
+        .private-login-card .input-group label { display:block; color:#fca5a5; font-size:0.75em; font-weight:600; margin-bottom:4px; letter-spacing:1px; }
+        .private-login-card .input-group input { width:100%; padding:12px 14px; background:rgba(239,68,68,0.05); border:1.5px solid rgba(239,68,68,0.3); border-radius:12px; color:#fff; font-size:0.9em; outline:none; transition:all 0.3s ease; text-align:right; font-family:'Cairo',sans-serif; }
+        .private-login-card .input-group input:focus { border-color:#ef4444; box-shadow:0 0 20px rgba(239,68,68,0.3); background:rgba(239,68,68,0.1); }
+        .private-login-card .input-group input::placeholder { color:rgba(239,68,68,0.3); }
+        .private-login-btn { width:100%; padding:13px; border:none; border-radius:14px; background:linear-gradient(135deg,#ef4444,#dc2626,#fbbf24,#ef4444); background-size:300% 300%; color:#fff; font-size:1em; font-weight:700; cursor:pointer; letter-spacing:3px; font-family:'Cairo',sans-serif; transition:all 0.4s ease; box-shadow:0 8px 25px rgba(239,68,68,0.35); }
+        .private-login-btn:hover { background-position:right center; box-shadow:0 12px 35px rgba(239,68,68,0.6); letter-spacing:5px; }
+        .private-login-btn:active { transform:scale(0.95); }
+        .private-login-btn.error { animation:shake 0.5s ease; background:linear-gradient(135deg,#dc2626,#991b1b,#dc2626); }
+        .private-close { position:absolute; top:10px; left:10px; width:28px; height:28px; background:rgba(0,0,0,0.6); border:2px solid rgba(239,68,68,0.4); border-radius:50%; color:#fff; font-size:13px; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:55; }
+        .private-close:active { background:rgba(239,68,68,0.3); }
+
+        /* ===== PRIVATE MESSAGES PAGE ===== */
+        .private-messages-page { position:fixed; inset:0; z-index:50; display:none; }
+        .private-messages-page.show { display:block; }
+        .private-messages-bg { position:fixed; inset:0; z-index:0; }
+        .private-messages-bg img { width:100%; height:100%; object-fit:cover; display:block; filter:brightness(0.4); }
+        .private-messages-bg-overlay { position:absolute; inset:0; background:rgba(0,0,0,0.45); z-index:1; }
+
+        .typewriter::-webkit-scrollbar { width:0; }
+    </style>
+</head>
+<body>
+
+    <div class="bg-image"><img src="back3.jpeg" alt="Background" onerror="this.style.display='none';"></div>
+    <div class="bg-overlay"></div>
+    <div class="rania-title">RANIA</div>
+
+    <!-- ===== LOGIN PAGE ===== -->
+    <div class="login-page" id="loginPage">
+        <div class="login-card">
+            <div class="login-title">مرحباً</div>
+            <div class="login-subtitle">سجلي الدخول للمتابعة</div>
+            <div class="input-group"><label>اسم المستخدم</label><input type="text" id="usernameInput" placeholder="أدخلي اسم المستخدم"></div>
+            <div class="input-group"><label>كلمة السر</label><input type="password" id="passwordInput" placeholder="••••••••"></div>
+            <button class="login-btn" id="loginBtn">تسجيل الدخول</button>
+            <div class="music-box">
+                <button class="music-btn" id="musicBtn">▶</button>
+                <div><div class="music-title">🎵 موسيقى هادئة</div><div class="music-label" id="musicStatus">اضغط للتشغيل</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MESSAGES PAGE ===== -->
+    <div class="messages-page" id="messagesPage">
+        <div class="boxes-container" id="boxesContainer">
+            <div class="boxes-track" id="boxesTrack"></div>
+        </div>
+    </div>
+
+    <!-- ===== PRIVATE LOGIN PAGE ===== -->
+    <div class="private-login-page" id="privateLoginPage">
+        <div class="private-login-card">
+            <div class="private-close" id="privateClose">✕</div>
+            <div class="private-login-title">PRIVATE</div>
+            <div class="private-login-subtitle">وصول خاص</div>
+            <div class="input-group"><label>اسم المستخدم</label><input type="text" id="privateUsernameInput" placeholder="أدخلي اسم المستخدم"></div>
+            <div class="input-group"><label>كلمة السر</label><input type="password" id="privatePasswordInput" placeholder="••••••••"></div>
+            <button class="private-login-btn" id="privateLoginBtn">دخول</button>
+        </div>
+    </div>
+
+    <!-- ===== PRIVATE MESSAGES PAGE ===== -->
+    <div class="private-messages-page" id="privateMessagesPage">
+        <div class="private-messages-bg"><img src="back2.jpeg" alt="Background" onerror="this.style.display='none';"></div>
+        <div class="private-messages-bg-overlay"></div>
+        <div class="boxes-container" id="privateBoxesContainer" style="z-index:10;">
+            <div class="boxes-track" id="privateBoxesTrack"></div>
+        </div>
+    </div>
+
+    <!-- ===== MAIN OVERLAY ===== -->
+    <div class="msg-overlay" id="msgOverlay">
+        <div class="msg-card" id="msgCard">
+            <div class="close-btn" id="closeBtn">✕</div>
+            <img id="overlayImg" src="" alt="رسالة">
+            <div class="typewriter" id="typewriter"></div>
+        </div>
+        <div class="nav-arrows">
+            <button class="nav-arrow" id="prevArrow">◀</button>
+            <button class="nav-arrow" id="nextArrow">▶</button>
+        </div>
+    </div>
+
+    <!-- ===== PRIVATE OVERLAY ===== -->
+    <div class="msg-overlay" id="privateMsgOverlay">
+        <div class="msg-card" id="privateMsgCard">
+            <div class="close-btn" id="privateCloseBtn">✕</div>
+            <img id="privateOverlayImg" src="" alt="رسالة">
+            <div class="typewriter" id="privateTypewriter"></div>
+        </div>
+        <div class="nav-arrows">
+            <button class="nav-arrow" id="privatePrevArrow">◀</button>
+            <button class="nav-arrow" id="privateNextArrow">▶</button>
+        </div>
+    </div>
+
+    <audio id="bgMusic" loop><source src="music.mp3" type="audio/mpeg"></audio>
+
+    <script>
+        // ===== PAGE STACK =====
+        const pageStack = [];
+        function pushPage(name) { pageStack.push(name);
+            history.pushState({page:name}, '', window.location.href); }
+        function popPage() { if (pageStack.length>1) { pageStack.pop();
+                showPage(pageStack[pageStack.length-1]); return true; } return false; }
+        function showPage(name) {
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('messagesPage').classList.remove('show');
+            document.getElementById('privateLoginPage').classList.remove('show');
+            document.getElementById('privateMessagesPage').classList.remove('show');
+            document.getElementById('msgOverlay').classList.remove('show');
+            document.getElementById('privateMsgOverlay').classList.remove('show');
+            switch(name) {
+                case 'login': document.getElementById('loginPage').classList.remove('hidden'); break;
+                case 'messages': document.getElementById('messagesPage').classList.add('show'); break;
+                case 'privateLogin': document.getElementById('messagesPage').classList.add('show');
+                    document.getElementById('privateLoginPage').classList.add('show'); break;
+                case 'privateMessages': document.getElementById('privateMessagesPage').classList.add('show'); break;
+            }
+        }
+        window.addEventListener('popstate', function(e) {
+            if (e.state&&e.state.page) { showPage(e.state.page);
+                const idx=pageStack.indexOf(e.state.page); if (idx>=0) pageStack.length=idx+1; } else if (pageStack.length>1) { pageStack.pop();
+                showPage(pageStack[pageStack.length-1]);
+                history.pushState({page:pageStack[pageStack.length-1]}, '', window.location.href); }
+        });
+        history.replaceState({page:'login'}, '', window.location.href);
+        pageStack.push('login');
+
+        // ===== MAIN LOGIN =====
+        const _u="RANIA", _p="5/9/2005";
+        const loginBtn=document.getElementById('loginBtn'), usernameInput=document.getElementById('usernameInput'), passwordInput=document.getElementById('passwordInput');
+        let messagesInitialized=false;
+        loginBtn.addEventListener('click', function() {
+            if (usernameInput.value.trim()===_u && passwordInput.value.trim()===_p) {
+                document.getElementById('loginPage').classList.add('hidden');
+                document.getElementById('messagesPage').classList.add('show');
+                pushPage('messages'); if (!messagesInitialized) { initMainMessages();
+                    messagesInitialized=true; }
+            } else { loginBtn.classList.add('error');
+                setTimeout(()=>loginBtn.classList.remove('error'),500);
+                passwordInput.value='';
+                passwordInput.focus(); }
+        });
+        passwordInput.addEventListener('keydown',e=>{if(e.key==='Enter')loginBtn.click();});
+        usernameInput.addEventListener('keydown',e=>{if(e.key==='Enter')passwordInput.focus();});
+
+        // ===== MUSIC =====
+        const bgMusic=document.getElementById('bgMusic'), musicBtn=document.getElementById('musicBtn'), musicStatus=document.getElementById('musicStatus');
+        let isPlaying=false;
+        musicBtn.addEventListener('click',()=>{if(isPlaying){bgMusic.pause();
+                musicBtn.textContent='▶';
+                musicBtn.classList.remove('playing');
+                musicStatus.textContent='اضغط للتشغيل';}else{bgMusic.play().catch(()=>{});
+                musicBtn.textContent='⏸';
+                musicBtn.classList.add('playing');
+                musicStatus.textContent='يعمل الآن...';} isPlaying=!isPlaying;});
+
+        // ===== MAIN MESSAGES =====
+        const _msgs=["✨ ﴿ السلام عليكم... أخبارك إيه؟ يارب تكوني بخير دايمًا 😂🤍 ﴾","🌸 ﴿ بقالي فترة بفكر في كام حاجة... وقلت بدل ما أفضل سايبها جوايا، أحب أقولها مرة واحدة وخلاص. 🤍 ﴾","😂🤍 ﴿ على فكرة... أنا حكيت لأهلي عنك. وكنت داخل وأنا عامل حسابي على مليون سيناريو 😂... بس اللي حصل كان عكس اللي في دماغي خالص. ﴾","🌙 ﴿ بالعكس... لقيتهم مبسوطين، وكل كلامهم كان يريح القلب. ساعتها حسيت إن ربنا طمني بطريقة جميلة. 🤍 ﴾","😂🤍 ﴿ وتخيلي بقى... بعد ما خلصت كلام، أول سؤال اتسألته كان: «طب هي شكلها عامل إزاي؟» 😂... وأنا ولا معايا صورة ولا أعرف أتصرف. ﴾","🌿 ﴿ يومها حسيت إن ربنا كرمني براحة في قلبي... ودي كانت من الحاجات اللي خلتني أتمسك أكتر إني أمشي في الطريق اللي يرضيه. 🤍🤲 ﴾","💖 ﴿ يمكن إنتِ متكونيش حاسة... بس وجودك عمل فرق حلو في حياتي، وخلاني أشوف حاجات كتير بشكل أحسن. 🤍✨ ﴾","🌸 ﴿ وبعد تفكير واستخارة... حسيت إن الصح دلوقتي إني أسيب كل حاجة تمشي في وقتها، من غير استعجال، ومن غير ما أغضب ربنا في حاجة نفسي فيها. 🤍 ﴾","🌿 ﴿ وأنا مش بكتب الكلام ده علشان أغير حاجة... أنا بكتبه علشان كنت حابب تكوني عارفة مكانتك عندي وبس. 🤍✨ ﴾","🌷 ﴿ وأتمنى من كل قلبي أشوفك دايمًا مبسوطة، ناجحة، وقريبة من ربنا... لأن بجد ده بيسعدني. 🤍 ﴾","🤍 ﴿ وأتمنى... لما تفتكري الفترة دي في أي وقت، تفتكريها بابتسامة، مش بأي إحساس تاني. 🌸 ﴾","✨ ﴿ وشكرًا... على كل ابتسامة كنتي سبب فيها، وكل إحساس جميل حسيت بيه بسبب وجودك. والله كانت فترة جميلة. ♥ ﴾","🌸 ﴿ والباقي بقى... نسيبه على ربنا. لو كان لينا خير مع بعض، هيجمعنا في الوقت اللي يكون فيه الخير لينا إحنا الاتنين. ولو كتبلك الخير في أي طريق، فوالله هكون أول واحد يدعيلك ويفرحلك. ربنا يحفظك يا رانيا. 🤍♥ ﴾"];
+        const _imgs=[1,2,3,4,5,6,7,8,9,1,2,3,4], _small=[2,3], _total=13;
+
+        function initMainMessages() {
+            initMessages('boxesTrack',_msgs,_imgs,_small,_total,'msgOverlay','overlayImg','typewriter','closeBtn','prevArrow','nextArrow');
+            const boxesTrack=document.getElementById('boxesTrack');
+            const privateBox=document.createElement('div');
+            privateBox.className='private-box';
+            privateBox.innerHTML='<div class="laser-edge"></div><div class="private-box-heart">🔒</div><div class="private-box-text">P R I V A T E</div>';
+            privateBox.addEventListener('click',()=>{document.getElementById('privateLoginPage').classList.add('show');
+                pushPage('privateLogin');});
+            boxesTrack.appendChild(privateBox);
+            const counterWrapper=document.createElement('div');
+            counterWrapper.className='counter-wrapper';
+            counterWrapper.innerHTML='<div class="counter"><div class="counter-item"><div class="counter-value" id="years">0</div><div class="counter-label">سنة</div></div><div class="counter-sep">:</div><div class="counter-item"><div class="counter-value" id="months">0</div><div class="counter-label">شهر</div></div><div class="counter-sep">:</div><div class="counter-item"><div class="counter-value" id="days">0</div><div class="counter-label">يوم</div></div><div class="counter-sep">:</div><div class="counter-item"><div class="counter-value" id="hours">0</div><div class="counter-label">ساعة</div></div><div class="counter-sep">:</div><div class="counter-item"><div class="counter-value" id="minutes">0</div><div class="counter-label">دقيقة</div></div><div class="counter-sep">:</div><div class="counter-item"><div class="counter-value" id="seconds">0</div><div class="counter-label">ثانية</div></div></div>';
+            boxesTrack.appendChild(counterWrapper);
+            updateCounter();
+        }
+
+        // ===== PRIVATE MESSAGES =====
+        const _privateMsgs=["1/طمنيني عليكي اخبارك اي مبسوطه ولا زعلانه ولا فرحانه","2/عارفه ي رانيا مش هبالغ في الكلام بس بمجرد الكلام معاكي ببقا مبسوط اوي يعني بقول في خيالي كده لما انت كدا مبسوط مبالك لما ربنا يجمعكم سوا هتعمل اي وبسرح والله 😂","3/بشوف فيكي كل حاجة حلوة يعني علي سبيل المثال عنيكي يعني ربنا يحفظك وبسم الله ماشاء الله حلوين اوي بحس فيهم كلام وحنيه ومشاعر كتير يعني مثلا ام كلثوم حسيتها بتغني ليكي وبتقول ♡شعر اي دا الكلام اللي في عنيه خلي احلي الكلام يغيب♡","4/بحب اشوفك مبسوطه عارف اخر مرة لغبط في الكلام معاكي بس والله مقصدش الكلام اللي فهمتيه بلعكس والله حنيتك وانتي بتراضيني خلتني اتكسف من نفسي اوي حسيت قد اي انا قاسي وحش ربنا يجمعني بيكي وربنا ميوجعني فيكي يارب","5/وعلفكره كلمه بحبك دي قليله عليكي اوي ببقا نغسي اكلمك كل يوم بس مش برضي بخاف عليكي","6/في اغنيه ل ام كلثوم بحب اسمعها بتقول\nأغــدآ ألقاكـ ..؟\nأغدا ألقاك ؟ يا خوف فؤادى من غدآ يا لشوقى واحتراقى فى انتظار الموعد\nآه كم أخشى غدآ هذا وأرجوه إقترابا كنت أستدنيه لكن هبتهُ لما إهابَ\nوأهلت فرحة القرب به حين إستجابَ هكذا أحتمل العمر نعياً وعذابا\nمهجة حرى وقلباً مسه الشوق فذابَ .... أغداً ألقاك؟\nكلماتها جميله جدا"];
+        const _privateImgs=[1,2,3,4,5,6], _privateSmall=[], _privateTotal=6;
+
+        // ===== PRIVATE LOGIN =====
+        const _pu2="6063", _pp2="47839836063";
+        const privateClose=document.getElementById('privateClose'), privateLoginBtn=document.getElementById('privateLoginBtn'), privateUsernameInput=document.getElementById('privateUsernameInput'), privatePasswordInput=document.getElementById('privatePasswordInput');
+        let privateMessagesInitialized=false;
+
+        privateClose.addEventListener('click',()=>{document.getElementById('privateLoginPage').classList.remove('show');
+            popPage();});
+        privateLoginBtn.addEventListener('click',()=>{if(privateUsernameInput.value.trim()===_pu2&&privatePasswordInput.value.trim()===_pp2){document.getElementById('privateLoginPage').classList.remove('show');
+                document.getElementById('privateMessagesPage').classList.add('show');
+                pushPage('privateMessages'); if(!privateMessagesInitialized){initMessages('privateBoxesTrack',_privateMsgs,_privateImgs,_privateSmall,_privateTotal,'privateMsgOverlay','privateOverlayImg','privateTypewriter','privateCloseBtn','privatePrevArrow','privateNextArrow');
+                    privateMessagesInitialized=true;}}else{privateLoginBtn.classList.add('error');
+                setTimeout(()=>privateLoginBtn.classList.remove('error'),500);
+                privatePasswordInput.value='';
+                privatePasswordInput.focus();}});
+        privatePasswordInput.addEventListener('keydown',e=>{if(e.key==='Enter')privateLoginBtn.click();});
+
+        // ===== INIT MESSAGES =====
+        function initMessages(trackId,msgs,imgs,small,total,overlayId,overlayImgId,typewriterId,closeBtnId,prevId,nextId) {
+            const boxesTrack=document.getElementById(trackId), msgOverlay=document.getElementById(overlayId), overlayImg=document.getElementById(overlayImgId), typewriter=document.getElementById(typewriterId), closeBtn=document.getElementById(closeBtnId), prevArrow=document.getElementById(prevId), nextArrow=document.getElementById(nextId);
+            let _idx=-1, _timer=null;
+            for (let i=0;i<total;i++){const box=document.createElement('div');
+                box.className='box';
+                box.dataset.index=i;
+                box.innerHTML='<div class="laser-edge"></div><div class="box-number">'+(i+1)+'</div><div class="box-heart">❤️</div><div class="box-open">O P E N</div>';
+                box.addEventListener('click',()=>_open(parseInt(box.dataset.index)));
+                boxesTrack.appendChild(box);}
+            function _type(el,txt,spd,cb){let i=0;
+                el.innerHTML='<span class="cursor"></span>';
+                _timer=setInterval(()=>{if(i<txt.length){const cur=el.querySelector('.cursor');if(cur)cur.remove();
+                    el.innerHTML+=txt.charAt(i);
+                    el.innerHTML+='<span class="cursor"></span>';
+                    i++;
+                    el.scrollTop=el.scrollHeight;}else{clearInterval(_timer);const cur=el.querySelector('.cursor');if(cur)cur.remove();if(cb)cb();}},spd);}
+            function _open(i){if(_timer)clearInterval(_timer);
+                _idx=i;const sm=small.includes(i);
+                overlayImg.src='PH'+imgs[i]+'.jpeg';
+                overlayImg.onerror=function(){this.style.display='none';
+                    document.getElementById(overlayId.replace('Overlay','Card')).style.background='linear-gradient(135deg,#1a0a04,#2c1408)';};
+                overlayImg.onload=function(){this.style.display='block';
+                    document.getElementById(overlayId.replace('Overlay','Card')).style.background='';};
+                typewriter.classList.toggle('small-text',sm);
+                msgOverlay.classList.add('show');
+                _arrows();
+                _type(typewriter,msgs[i],sm?18:16,null);}
+            function _close(){if(_timer)clearInterval(_timer);
+                msgOverlay.classList.remove('show');
+                typewriter.innerHTML='';
+                _idx=-1;}
+            closeBtn.addEventListener('click',_close);
+            msgOverlay.addEventListener('click',e=>{if(e.target===msgOverlay)_close();});
+            function _arrows(){prevArrow.disabled=_idx<=0;
+                nextArrow.disabled=_idx>=total-1;}
+            function _nav(ni){_idx=ni;const sm=small.includes(_idx);
+                overlayImg.src='PH'+imgs[_idx]+'.jpeg';
+                typewriter.classList.toggle('small-text',sm);
+                _arrows();if(_timer)clearInterval(_timer);
+                _type(typewriter,msgs[_idx],sm?18:16,null);}
+            prevArrow.addEventListener('click',e=>{e.stopPropagation();if(_idx>0)_nav(_idx-1);});
+            nextArrow.addEventListener('click',e=>{e.stopPropagation();if(_idx<_total-1)_nav(_idx+1);});
+            document.addEventListener('keydown',e=>{if(e.key==='Escape'&&msgOverlay.classList.contains('show'))_close();if(e.key==='ArrowRight'&&msgOverlay.classList.contains('show')&&_idx<total-1)_nav(_idx+1);if(e.key==='ArrowLeft'&&msgOverlay.classList.contains('show')&&_idx>0)_nav(_idx-1);});}
+
+        // ===== COUNTER =====
+        function updateCounter(){const st=new Date('2025-07-17T00:00:00'),df=new Date()-st,ds=Math.floor(df/1000),dm=Math.floor(ds/60),dh=Math.floor(dm/60),dd=Math.floor(dh/24),y=Math.floor(dd/365),rmd=dd-(y*365),mo=Math.floor(rmd/30),rd=rmd-(mo*30);const els={years:document.getElementById('years'),months:document.getElementById('months'),days:document.getElementById('days'),hours:document.getElementById('hours'),minutes:document.getElementById('minutes'),seconds:document.getElementById('seconds')};if(els.years)els.years.textContent=y;if(els.months)els.months.textContent=mo;if(els.days)els.days.textContent=rd;if(els.hours)els.hours.textContent=dh%24;if(els.minutes)els.minutes.textContent=dm%60;if(els.seconds)els.seconds.textContent=ds%60;}
+        setInterval(updateCounter,1000);
+    </script>
+</body>
+</html>
