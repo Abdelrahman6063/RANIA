@@ -164,7 +164,7 @@ export function CountdownBox() {
         style={{ background: "oklch(0.75 0.16 12 / 30%)" }}
       />
       <p className="font-body text-[10px] tracking-[0.45em] text-muted-foreground">SINCE</p>
-      <h3 className="mt-2 font-display text-3xl text-gold-shine">٤ / ٧ / ٢٠٢٥</h3>
+      <h3 className="mt-2 font-display text-3xl text-gold-shine"<h3>14 / 7 / 2025</h3>
       <p className="mt-1 font-serif-ar text-sm text-muted-foreground">
         من اليوم ده والحكاية شغالة 🤍
       </p>
