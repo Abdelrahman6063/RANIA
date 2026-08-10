@@ -1,5 +1,11 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { HeartBurst } from "./HeartBurst";
+import {
+  playCinematicChime,
+  playDeepClick,
+  playSoftChime,
+  playWrong,
+} from "@/lib/sound";
 
 type Props = {
   scriptTitle: string;
@@ -28,16 +34,25 @@ export function LoginGate({
   const [shakeKey, setShakeKey] = useState(0);
   const [bursting, setBursting] = useState(false);
 
+  // رنّة سحرية ناعمة أول ما شاشة الدخول تظهر (لو المتصفح سامح بالصوت).
+  useEffect(() => {
+    const t = setTimeout(() => playSoftChime(), 400);
+    return () => clearTimeout(t);
+  }, []);
+
   function submit(e: FormEvent) {
     e.preventDefault();
+    playDeepClick();
     const okUser = user.trim().toLowerCase() === expectedUser.toLowerCase();
     const okPass = pass.trim() === expectedPass;
     if (okUser && okPass) {
       setError(false);
+      playCinematicChime();
       setBursting(true);
       return;
     }
     setError(true);
+    playWrong();
     setShakeKey((k) => k + 1);
   }
 

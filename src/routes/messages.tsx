@@ -4,6 +4,8 @@ import { MessageGrid } from "@/components/MessageGrid";
 import { DateCounter } from "@/components/DateCounter";
 import { Ambience } from "@/components/Ambience";
 import { MAIN_MESSAGES, MAIN_TEASERS } from "@/lib/messages";
+import { SoundToggle } from "@/components/SoundToggle";
+import { playWhoosh } from "@/lib/sound";
 
 export const Route = createFileRoute("/messages")({
   head: () => ({
@@ -30,6 +32,9 @@ function MessagesPage() {
     <main className="mx-auto w-full max-w-5xl px-5 py-12">
       <Ambience />
       <header className="animate-rise-in text-center">
+        <div className="mb-4 flex justify-start">
+          <SoundToggle />
+        </div>
         <h1 dir="ltr" className="script-soft text-6xl sm:text-7xl">RANIA</h1>
         <p className="mt-1 text-[0.7rem] tracking-[0.45em] text-muted-foreground uppercase">
           my everything
@@ -41,7 +46,10 @@ function MessagesPage() {
       </section>
 
       <button
-        onClick={() => navigate({ to: "/private" })}
+        onClick={() => {
+          playWhoosh();
+          navigate({ to: "/private" });
+        }}
         className="grain group mt-4 flex w-full items-center justify-between gap-4 rounded-3xl px-5 py-5 transition-transform duration-500 ease-out hover:-translate-y-1"
         style={{
           background: "linear-gradient(150deg, oklch(0.44 0.14 12), oklch(0.22 0.08 330))",

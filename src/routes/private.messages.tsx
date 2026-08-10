@@ -3,6 +3,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { MessageGrid } from "@/components/MessageGrid";
 import { Ambience } from "@/components/Ambience";
 import { PRIVATE_MESSAGES, PRIVATE_TEASERS } from "@/lib/messages";
+import { SoundToggle } from "@/components/SoundToggle";
 
 export const Route = createFileRoute("/private/messages")({
   head: () => ({
@@ -29,6 +30,9 @@ function PrivateMessages() {
     <main className="mx-auto w-full max-w-4xl px-5 py-12">
       <Ambience />
       <header className="animate-rise-in text-center">
+        <div className="mb-4 flex justify-start">
+          <SoundToggle />
+        </div>
         <h1 dir="ltr" className="script-soft text-6xl">Private</h1>
         <p className="mt-1 text-[0.7rem] tracking-[0.45em] text-muted-foreground uppercase">
           only for you

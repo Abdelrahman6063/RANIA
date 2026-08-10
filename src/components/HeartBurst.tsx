@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from "react";
+import { playHeartbeat, playSparkle } from "@/lib/sound";
 
 type Props = {
   onDone: () => void;
@@ -8,8 +9,13 @@ type Props = {
 /** Luxe unlock transition: a beating heart lifts petals, then blooms over the screen. */
 export function HeartBurst({ onDone, duration = 1400 }: Props) {
   useEffect(() => {
+    playHeartbeat();
+    const s = setTimeout(() => playSparkle(), 500);
     const t = setTimeout(onDone, duration);
-    return () => clearTimeout(t);
+    return () => {
+      clearTimeout(s);
+      clearTimeout(t);
+    };
   }, [onDone, duration]);
 
   const petals = useMemo(

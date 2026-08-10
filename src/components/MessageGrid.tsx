@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { playKey, playPaperOpen, playWhoosh } from "@/lib/sound";
 
 const THEMES = [
   {
@@ -46,7 +47,10 @@ function Typewriter({ text, speed = 26 }: { text: string; speed?: number }) {
 
   useEffect(() => {
     if (count >= ref.current.length) return;
-    const t = setTimeout(() => setCount((c) => c + 1), speed);
+    const t = setTimeout(() => {
+      setCount((c) => c + 1);
+      if (ref.current[count] !== " " && ref.current[count] !== "\n") playKey();
+    }, speed);
     return () => clearTimeout(t);
   }, [count, speed]);
 
@@ -81,11 +85,13 @@ export function MessageGrid({ messages, teasers }: { messages: string[]; teasers
   }, [open]);
 
   function openLetter(i: number) {
+    playPaperOpen();
     setOpen(i);
     setRead((prev) => new Set(prev).add(i));
   }
 
   function closeLetter() {
+    playWhoosh();
     if (window.history.state?.letter) window.history.back();
     else setOpen(null);
   }
