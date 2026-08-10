@@ -10,63 +10,33 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as MessagesRouteImport } from './routes/messages'
-import { Route as PrivateIndexRouteImport } from './routes/private.index'
-import { Route as PrivateMessagesRouteImport } from './routes/private.messages'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const MessagesRoute = MessagesRouteImport.update({
-  id: '/messages',
-  path: '/messages',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivateIndexRoute = PrivateIndexRouteImport.update({
-  id: '/private/',
-  path: '/private/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivateMessagesRoute = PrivateMessagesRouteImport.update({
-  id: '/private/messages',
-  path: '/private/messages',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/messages': typeof MessagesRoute
-  '/private/messages': typeof PrivateMessagesRoute
-  '/private/': typeof PrivateIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/messages': typeof MessagesRoute
-  '/private/messages': typeof PrivateMessagesRoute
-  '/private': typeof PrivateIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/messages': typeof MessagesRoute
-  '/private/messages': typeof PrivateMessagesRoute
-  '/private/': typeof PrivateIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/messages' | '/private/messages' | '/private/'
+  fullPaths: '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/messages' | '/private/messages' | '/private'
-  id: '__root__' | '/' | '/messages' | '/private/messages' | '/private/'
+  to: '/'
+  id: '__root__' | '/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  MessagesRoute: typeof MessagesRoute
-  PrivateMessagesRoute: typeof PrivateMessagesRoute
-  PrivateIndexRoute: typeof PrivateIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -78,35 +48,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/messages': {
-      id: '/messages'
-      path: '/messages'
-      fullPath: '/messages'
-      preLoaderRoute: typeof MessagesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/private/': {
-      id: '/private/'
-      path: '/private'
-      fullPath: '/private/'
-      preLoaderRoute: typeof PrivateIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/private/messages': {
-      id: '/private/messages'
-      path: '/private/messages'
-      fullPath: '/private/messages'
-      preLoaderRoute: typeof PrivateMessagesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  MessagesRoute: MessagesRoute,
-  PrivateMessagesRoute: PrivateMessagesRoute,
-  PrivateIndexRoute: PrivateIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
